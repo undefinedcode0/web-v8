@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,13 +8,13 @@
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <Nav />
+    <nav />
 
     <main>
       <a href="/blog.html" class="back-link">&larr; back to blog</a>
       <header>
-        <h2><span style="user-select: none; color: var(--text-muted);">//</span> ${title}</h2>
-        <div style="user-select: none;" class="meta">
+        <h2><span style="user-select: none; color: var(--text-muted)">//</span> ${title}</h2>
+        <div style="user-select: none" class="meta">
           <span>written on ${date}</span>
           <span>by ${author}</span>
         </div>
@@ -22,9 +22,7 @@
 
       <hr class="divider" />
 
-      <article>
-        ${--content}
-      </article>
+      <article>${--content}</article>
 
       <hr class="divider" />
     </main>
