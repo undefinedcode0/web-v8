@@ -1,0 +1,13 @@
+<nav>
+  <ul class="nav-links">
+    <li><a href="/">home</a></li>
+    <li><a href="/writing.html">writing</a></li>
+    <li><a href="/about.html">about</a></li>
+  </ul>
+</nav>
+
+<script>
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    if (link.href === location.href) link.classList.add('active');
+  });
+</script>

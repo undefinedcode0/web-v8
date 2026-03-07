@@ -1,0 +1,185 @@
+:root {
+    --text-muted: #666;
+    --text-primary: #fff;
+    --text-secondary: #aaa;
+    --bg: #000;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+@font-face {
+  font-family: 'GeistMono';
+  src: url('/fonts/geistmono.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  background: var(--bg);
+  font-family: 'GeistMono';
+  color: #fff;
+  margin: 0;
+  padding: clamp(1.5rem, 5vw, 5rem);
+  line-height: 1.75;
+  font-size: 95%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh; /* respects mobile browser chrome */
+}
+
+a {
+  color: #fff;
+  text-decoration: underline;
+  text-decoration-color: #444; /* underline separate from text color */
+  text-underline-offset: 3px; /* gap between text and underline */
+}
+
+a:hover {
+  color: #aaa;
+  text-decoration-color: #aaa;
+}
+
+a:visited {
+  color: #fff;
+}
+
+.prose {
+    max-width: 800px;
+}
+
+::selection {
+  background: var(--text-primary);
+  color: var(--bg);
+}
+
+/* start nav stuff */
+nav {
+  border-bottom: 1px dashed var(--border);
+}
+
+nav .nav-brand {
+  display: block;
+  font-size: clamp(1rem, 3vw, 1.2rem);
+  font-weight: bold;
+  color: var(--text-primary);
+  text-decoration: none;
+  margin-bottom: 0.75rem;
+}
+
+nav .nav-links {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+/* end nav stuff */
+
+/* start post stuff */
+.back-link {
+  display: inline-block;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: var(--text-primary);
+}
+
+.meta {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  margin: 0.5rem 0 0 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.meta span {
+  margin-right: 0.5rem;
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+  margin: 0;
+}
+
+article {
+  margin-top: 1rem;
+  max-width: 50rem;
+}
+
+article h1,
+article h2,
+article h3 {
+  color: var(--text-primary);
+}
+
+article code {
+  background: #111;
+  color: var(--text-secondary);
+  padding: 0.15rem 0.4rem;
+  font-family: inherit;
+  font-size: 0.9em;
+}
+
+article pre {
+  background: #111;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1.25rem 0;
+}
+
+article pre code {
+  background: none;
+  padding: 0;
+}
+
+.post-footer {
+  margin-top: 3rem;
+  padding-top: 0;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.post-card {
+  padding: 1.25rem 0;
+  border-bottom: 1px dashed var(--border);
+}
+
+.post-card:first-child {
+  border-top: 1px dashed var(--border);
+}
+
+.post-card a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.post-card h2 {
+  margin: 0 0 0.25rem 0;
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+  color: var(--text-primary);
+  transition: color 0.2s ease;
+}
+
+.post-card a:hover h2 {
+  color: var(--text-secondary);
+}
+/* end post stuff */
