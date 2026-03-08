@@ -26,7 +26,7 @@ body {
   margin: 0;
   padding: clamp(1.5rem, 5vw, 5rem);
   line-height: 1.75;
-  font-size: 95%;
+  font-size: clamp(0.84375rem, 0.8125rem + 0.1563vw, 1rem);
   display: flex;
   flex-direction: column;
   min-height: 100dvh; /* respects mobile browser chrome */
@@ -183,3 +183,28 @@ article pre code {
   color: var(--text-secondary);
 }
 /* end post stuff */
+
+/* start lain */
+.site-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 800px) 365px; /* fixed content width, fixed lain width */
+  gap: 5.5rem;
+  align-items: start;
+}
+
+.lain-panel img {
+  width: 100%;
+  image-rendering: pixelated;
+  position: sticky;
+  top: 12rem;
+}
+
+@media (max-width: 768px) {
+  .site-grid {
+    grid-template-columns: 1fr;
+  }
+  .lain-panel {
+    display: none;
+  }
+}
+/* end lain */

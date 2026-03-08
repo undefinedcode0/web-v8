@@ -2,22 +2,26 @@
 <html lang="en">
   <Head title="${title}" />
   <body>
-    <div>
-      <Nav />
-      <main>
-        <slot></slot>
-      </main>
-      <footer style="display: flex; flex-direction: row; margin-top: 1.25rem; gap: 0.5rem;">
-        <span><a href="/pgp.asc">PGP</a></span>
-        <span style="color: var(--text-muted); user-select: none;">&bull;</span>
-        <span><a href="https://github.com/undefinedcode0">GitHub</a></span>
-      </footer>
-      <span style="color: var(--text-muted);"><i>made with love, by a human</i></span>
-      <span style="color: var(--text-muted);"><div id="quote"></div></span>
+    <div class="site-grid">
+      <div class="content-col">
+        <Nav />
+        <main>
+          <slot></slot>
+        </main>
+        <footer style="display: flex; flex-direction: row; margin-top: 1.25rem; gap: 0.5rem;">
+          <span><a href="/pgp.asc">PGP</a></span>
+          <span style="color: var(--text-muted); user-select: none;">&bull;</span>
+          <span><a href="https://github.com/undefinedcode0">GitHub</a></span>
+        </footer>
+        <span style="color: var(--text-muted);"><i>made with love, by a human</i></span>
+        <span style="color: var(--text-muted);"><div id="quote"></div></span>
+      </div>
+      <aside class="lain-panel">
+        <img src="/assets/lain-dither.png" alt="lain" fetchpriority="high" />
+      </aside>
     </div>
   </body>
 </html>
-
 <script>
   (() => {
     const quotes = [
