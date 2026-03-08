@@ -1,23 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>anagnorisis - writing</title>
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-  <body>
-    <Nav />
-    <main>
-      <header>
-        <h1>writing</h1>
-      </header>
+<Layout title="anagnorisis - writing">
+  <article class="prose">
+  <markdown>
+    # writing
+  </markdown>
 
-      <hr class="divider" />
+  <hr class="divider" />
 
-      <section class="posts">
-        <::Template{Posts} />
-      </section>
-    </main>
-  </body>
-</html>
+  <section class="posts">
+    <::Template{Posts} />
+  </section>
+  
+  <hr class="divider" />
+  
+  </article>
+  <br />
+</Layout>
