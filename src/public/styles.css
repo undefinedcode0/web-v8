@@ -35,13 +35,15 @@ body {
 a {
   color: #fff;
   text-decoration: underline;
-  text-decoration-color: #444; /* underline separate from text color */
-  text-underline-offset: 3px; /* gap between text and underline */
+  text-decoration-color: #444;
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
 }
 
 a:hover {
   color: #aaa;
   text-decoration-color: #aaa;
+  text-decoration-thickness: 2px;
 }
 
 a:visited {
