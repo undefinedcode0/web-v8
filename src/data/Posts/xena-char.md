@@ -2,6 +2,7 @@
 title: My Character "Xena-931b"
 description: my fourth character that was inspired by ¥ØU$UK€ ¥UK1MAT$U and "Detroit Become Human"
 date: 'November 25 2025'
+updDate: 'January 1 2026'
 author: 'undefinedcode'
 ---
 

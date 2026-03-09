@@ -140,6 +140,12 @@ article pre code {
   padding: 0;
 }
 
+article img {
+  max-width: 90%;
+  height: auto;
+  display: block;
+}
+
 .post-footer {
   margin-top: 3rem;
   padding-top: 0;
@@ -183,8 +189,8 @@ article pre code {
 /* start lain */
 .site-grid {
   display: grid;
-  grid-template-columns: minmax(0, 920px) 365px; /* fixed content width, fixed lain width */
-  gap: 5.5rem;
+  grid-template-columns: minmax(0, 920px) 325px;
+  gap: 5rem;
   align-items: start;
 }
 
