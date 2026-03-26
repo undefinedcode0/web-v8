@@ -16,7 +16,7 @@ after my discovery, i decided to contact the owner of the website on twitter:
 
 UNTIL... i found out that the owner of the website introduced the requirement of tokens and uuids (for a valid session) but i found out that can be easily bypassed with a small python script. first, we'll get into how i found out about this. remember when the owner of the website "fixed the issue"? yeah, i looked at the new swagger api documentation and went straight to trying to find a workaround for the new patch to the issue i found earlier. after some trial and error, i managed to get five codes but not all the available ones the website reported, but they changed in large intervals, still a great discovery. now that you know about this, here is the script i came up with:
 
-```
+```bash
 PROJECT="<<>>.supabase.co"
 ANON_KEY="<<>>"
 

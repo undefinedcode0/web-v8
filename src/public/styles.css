@@ -37,7 +37,9 @@ a {
   text-decoration: underline;
   text-decoration-color: #444;
   text-underline-offset: 3px;
-  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+  transition:
+    color 0.2s ease,
+    text-decoration-color 0.2s ease;
 }
 
 a:hover {
@@ -61,76 +63,91 @@ a:visited {
 
 /* start code highlighting */
 .code {
- color: #c5c9c5;
- background-color: #0d0c0c;
+  color: #c5c9c5;
+  background-color: #0d0c0c;
 }
 
-.comment, .punctuation.definition.comment {
- color: #595b56;
-font-style: italic;
+.comment,
+.punctuation.definition.comment {
+  color: #595b56;
+  font-style: italic;
 }
-.keyword.control, .keyword.operator.word {
- color: #e46876;
+.keyword.control,
+.keyword.operator.word {
+  color: #e46876;
 }
 .keyword {
- color: #7fb4ca;
+  color: #7fb4ca;
 }
-.storage.type, .storage.modifier {
- color: #7fb4ca;
+.storage.type,
+.storage.modifier {
+  color: #7fb4ca;
 }
-.string, .string.quoted, .string.template {
- color: #87a987;
+.string,
+.string.quoted,
+.string.template {
+  color: #87a987;
 }
 .constant.character.escape {
- color: #7aa89f;
+  color: #7aa89f;
 }
 .constant.numeric {
- color: #e6c384;
+  color: #e6c384;
 }
 .constant.language {
- color: #e6a96d;
+  color: #e6a96d;
 }
-.entity.name.function, .meta.function-call.generic {
- color: #7aa89f;
+.entity.name.function,
+.meta.function-call.generic {
+  color: #7aa89f;
 }
-.entity.name.type, .entity.name.class, .support.type, .support.class {
- color: #938aa9;
+.entity.name.type,
+.entity.name.class,
+.support.type,
+.support.class {
+  color: #938aa9;
 }
-.variable, .variable.other {
- color: #c5c9c5;
+.variable,
+.variable.other {
+  color: #c5c9c5;
 }
 .variable.parameter {
- color: #8ba4b0;
+  color: #8ba4b0;
 }
-.variable.other.property, .support.variable.property {
- color: #8ea4a2;
+.variable.other.property,
+.support.variable.property {
+  color: #8ea4a2;
 }
-.entity.name.decorator, .meta.decorator {
- color: #e6a5c9;
+.entity.name.decorator,
+.meta.decorator {
+  color: #e6a5c9;
 }
 .entity.name.tag {
- color: #e46876;
+  color: #e46876;
 }
 .entity.other.attribute-name {
- color: #7fb4ca;
+  color: #7fb4ca;
 }
 .keyword.operator {
- color: #a6a69c;
+  color: #a6a69c;
 }
 .punctuation {
- color: #686b64;
+  color: #686b64;
 }
-.entity.name.namespace, .entity.name.module {
- color: #99a4cc;
+.entity.name.namespace,
+.entity.name.module {
+  color: #99a4cc;
 }
 .support.type.property-name.css {
- color: #7aa89f;
+  color: #7aa89f;
 }
-.support.constant.property-value.css, .meta.property-value.css {
- color: #a292a3;
+.support.constant.property-value.css,
+.meta.property-value.css {
+  color: #a292a3;
 }
-.entity.other.attribute-name.class.css, .entity.other.attribute-name.id.css {
- color: #d98aad;
+.entity.other.attribute-name.class.css,
+.entity.other.attribute-name.id.css {
+  color: #d98aad;
 }
 /* end code highlighting */
 
