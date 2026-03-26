@@ -193,8 +193,8 @@ nav .nav-links {
   flex-wrap: wrap;
 }
 
-.meta span {
-  margin-right: 0.5rem;
+pre .meta {
+    display: inline;
 }
 
 .description {
