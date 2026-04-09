@@ -56,22 +56,23 @@ a:visited {
 /* start arrow styling for links */
 
 a[href^="http"]::after {
-  content: "↗";
-  font-size: 0.85em;
-  color: #aaa;
-  opacity: 0.6;
-  /* thats revision_1 */
-  /* transition: opacity 0.15s ease; */
-  margin-left: 0.5ch;
-  transition: transform 0.15s ease, opacity 0.15s ease;
-  vertical-align: baseline;
-  transform-origin: left center;
+  content: '';
   display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-left: 0.2ch;
+  margin-top: 0.3em;
+  vertical-align: top;
+  opacity: 0.6;
+  background-color: #aaa;
+  -webkit-mask: url('/assets/arrow.svg') no-repeat center / contain;
+  mask: url('/assets/arrow.svg') no-repeat center / contain;
+  transform: translate(0, 0);
 }
 
 a[href^="http"]:hover::after {
   opacity: 1;
-  transform: scale(1.15);
+  transform: translate(2px, -2px);
 }
 
 /* end arrow styling for links */
@@ -336,4 +337,11 @@ article img {
     transition: none !important;
   }
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  a[href^="http"]::after {
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+}
+
 /* end misc stuff */
