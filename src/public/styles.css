@@ -3,6 +3,7 @@
   --text-primary: #fff;
   --text-secondary: #aaa;
   --bg: #000;
+  --border: #333;
 }
 
 *,
@@ -21,7 +22,7 @@
 
 body {
   background: var(--bg);
-  font-family: 'GeistMono';
+  font-family: 'GeistMono', monospace;
   color: #fff;
   margin: 0;
   padding: clamp(1.5rem, 5vw, 5rem);
@@ -51,6 +52,29 @@ a:hover {
 a:visited {
   color: #fff;
 }
+
+/* start arrow styling for links */
+
+a[href^="http"]::after {
+  content: "↗";
+  font-size: 0.85em;
+  color: #aaa;
+  opacity: 0.6;
+  /* thats revision_1 */
+  /* transition: opacity 0.15s ease; */
+  margin-left: 0.5ch;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  vertical-align: baseline;
+  transform-origin: left center;
+  display: inline-block;
+}
+
+a[href^="http"]:hover::after {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+/* end arrow styling for links */
 
 .prose {
   max-width: 920px;
@@ -191,6 +215,7 @@ nav .nav-links {
   margin: 0.5rem 0 0 0;
   display: flex;
   flex-wrap: wrap;
+  gap: 0.5rem;
 }
 
 pre .meta {
@@ -256,7 +281,6 @@ article img {
 
 .post-card {
   padding: 1.25rem 0;
-  border-bottom: 1px dashed var(--border);
 }
 
 .post-card:first-child {
@@ -305,3 +329,11 @@ article img {
   }
 }
 /* end lain */
+
+/* start misc stuff */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+  }
+}
+/* end misc stuff */

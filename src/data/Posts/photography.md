@@ -2,7 +2,7 @@
 title: Photography
 description: My journey into photography and a selection of my best shots.
 date: 'June 9, 2025'
-updDate: 'September 28, 2025'
+updDate: 'April 04, 2026'
 author: 'undefinedcode'
 ---
 
@@ -10,6 +10,12 @@ Hey, everyone. This is my first proper post, and it's about one of my favorite h
 
 Enough talk — enjoy the shots.  
 _Note: All of these were taken on a budget phone using an open-source camera app that lets me shoot RAW/DNG files._
+
+## _2026_
+
+![](/assets/IMG_0067.webp)
+
+![](/assets/IMG_20260311_125337.webp)
 
 ## _2025_
 
