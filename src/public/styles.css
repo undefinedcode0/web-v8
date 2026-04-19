@@ -333,8 +333,11 @@ article img {
 
 /* start misc stuff */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    transition: none !important;
+  a {
+    transition: none;
+  }
+  a[href^="http"]::after {
+    transition: none;
   }
 }
 
@@ -343,5 +346,4 @@ article img {
     transition: transform 0.2s ease, opacity 0.2s ease;
   }
 }
-
 /* end misc stuff */
