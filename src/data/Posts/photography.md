@@ -2,7 +2,7 @@
 title: Photography
 description: My journey into photography and a selection of my best shots.
 date: 'June 9, 2025'
-updDate: 'April 04, 2026'
+updDate: 'July 23, 2026'
 author: 'undefinedcode'
 ---
 
