@@ -18,7 +18,7 @@
   }
   
   const CURSOR_SVG =
-    '<svg width="20" height="32" viewBox="0 0 10 16" shape-rendering="crispEdges">' +
+    '<svg width="10" height="16" viewBox="0 0 10 16" shape-rendering="crispEdges">' +
     '<rect x="0" y="0" width="2" height="1" fill="#fff"/>' +
     '<rect x="0" y="1" width="1" height="1" fill="#fff"/>' +
     '<rect x="1" y="1" width="1" height="1" fill="#000"/>' +
@@ -88,8 +88,8 @@
       '<span style="' +
       [
         "display:block",
-        "margin-left:18px",
-        "margin-top:-4px",
+        "margin-left:12px",
+        "margin-top:-2px",
         "font-family:'GeistMono',monospace",
         "font-size:0.65rem",
         "color:" + color,
