@@ -14,6 +14,10 @@ author: 'undefinedcode'
 - Birth Date: October 24, 2004
 - Pronouns: They/Them
 
+## Concept art of Xena done by Verum:
+
+![Art of Xena done by Verum](/assets/wsdrf.png)
+
 ## Overview
 
 Xena is a dealer on the outskirts of Russia, living off of cybernetic augments. Once a normal human, now lives with neurotech and biomechanical implants. Struggling to balance street work with their traumatizing past. They were supposed to be dead, but now have been brought back with neuro tech and biomechanical implants. They still have their full consciousness, and now find themselves more aware of their surroundings than usual.
