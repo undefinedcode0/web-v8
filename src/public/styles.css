@@ -4,6 +4,7 @@
   --text-secondary: #aaa;
   --bg: #000;
   --border: #333;
+  color-scheme: dark;
 }
 
 *,
@@ -370,6 +371,12 @@ article img {
   font-size: 0.9em;
   padding: 0.5rem;
   resize: vertical;
+  /* Stop the OS/desktop theme (GTK, etc.) from painting its own native
+     widget background over ours -- appearance:auto lets that happen in
+     both Chromium and Firefox on Linux identically. */
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 
 .msg-form input[type="text"]:focus,
@@ -379,13 +386,15 @@ article img {
 }
 
 /* Chrome ignores autocomplete="off" on name-like fields and force-fills
-   its own white background -- override it back to the site's colors. */
+   its own white background -- override it back to the site's colors.
+   Covers both the standard and legacy-webkit pseudo-classes. */
+.msg-form input:autofill,
 .msg-form input:-webkit-autofill,
 .msg-form input:-webkit-autofill:hover,
 .msg-form input:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--text-primary);
-  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset;
-  box-shadow: 0 0 0 1000px var(--bg) inset;
+  -webkit-text-fill-color: var(--text-primary) !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset !important;
+  box-shadow: 0 0 0 1000px var(--bg) inset !important;
   caret-color: var(--text-primary);
   transition: background-color 9999s ease-in-out 0s;
 }
