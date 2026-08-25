@@ -35,9 +35,66 @@
 
         If the contents are confidential, encrypt your message with my PGP public key: [/pgp.asc](/pgp.asc)
         Fingerprint: 50ED81788A7DF34B48DC67ACC4C2C082662955B7
-
-        ---
       </markdown>
+
+    <form id="msg-form" class="msg-form">
+      <label for="msg-name">name (optional)</label>
+      <input id="msg-name" name="name" type="text" maxlength="50" autocomplete="off" />
+
+      <label for="msg-body">message</label>
+      <textarea id="msg-body" name="message" rows="4" maxlength="1000" required></textarea>
+
+      <!-- honeypot: hidden from real users, bots tend to fill every field -->
+      <input id="msg-hp" name="hp" type="text" tabindex="-1" autocomplete="off" class="msg-hp" />
+
+      <button type="submit">send</button>
+      <span id="msg-status" class="msg-status" role="status"></span>
+    </form>
+
+    <hr />
+
+    <script>
+      (() => {
+        const ENDPOINT = "https://web-v8-cursors.undefinedcode.workers.dev/message";
+        const form = document.getElementById("msg-form");
+        const status = document.getElementById("msg-status");
+        const button = form.querySelector("button");
+
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const name = document.getElementById("msg-name").value;
+          const message = document.getElementById("msg-body").value.trim();
+          const hp = document.getElementById("msg-hp").value;
+
+          if (!message) return;
+
+          button.disabled = true;
+          status.textContent = "sending...";
+
+          try {
+            const res = await fetch(ENDPOINT, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ name, message, hp }),
+            });
+            const data = await res.json();
+
+            if (data.ok) {
+              status.textContent = "sent.";
+              form.reset();
+            } else if (res.status === 429) {
+              status.textContent = "slow down, try again in a bit.";
+            } else {
+              status.textContent = "failed to send, try again later.";
+            }
+          } catch {
+            status.textContent = "failed to send, try again later.";
+          } finally {
+            button.disabled = false;
+          }
+        });
+      })();
+    </script>
   </article>
   <br />
 </Layout>

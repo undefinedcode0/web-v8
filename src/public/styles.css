@@ -347,3 +347,71 @@ article img {
   }
 }
 /* end misc stuff */
+/* start message widget */
+.msg-form {
+  max-width: 480px;
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.msg-form label {
+  color: var(--text-secondary);
+  font-size: 0.85em;
+}
+
+.msg-form input[type="text"],
+.msg-form textarea {
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  color: var(--text-primary);
+  font-family: 'GeistMono', monospace;
+  font-size: 0.9em;
+  padding: 0.5rem;
+  resize: vertical;
+}
+
+.msg-form input[type="text"]:focus,
+.msg-form textarea:focus {
+  outline: none;
+  border-color: var(--text-secondary);
+}
+
+.msg-form button {
+  align-self: flex-start;
+  background: var(--bg);
+  border: 1px dashed var(--text-primary);
+  color: var(--text-primary);
+  font-family: 'GeistMono', monospace;
+  font-size: 0.9em;
+  padding: 0.4rem 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.msg-form button:hover {
+  background: var(--text-primary);
+  color: var(--bg);
+}
+
+.msg-form button:disabled {
+  opacity: 0.5;
+  cursor: default;
+  background: var(--bg);
+  color: var(--text-primary);
+}
+
+.msg-status {
+  color: var(--text-muted);
+  font-size: 0.85em;
+}
+
+.msg-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+/* end message widget */
