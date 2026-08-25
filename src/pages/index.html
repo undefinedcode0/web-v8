@@ -38,8 +38,8 @@
       </markdown>
 
     <form id="msg-form" class="msg-form">
-      <label for="msg-name">name (optional)</label>
-      <input id="msg-name" name="name" type="text" maxlength="50" autocomplete="off" />
+      <label for="msg-handle">name (optional)</label>
+      <input id="msg-handle" name="handle" type="text" maxlength="50" autocomplete="off" data-lpignore="true" data-1p-ignore data-form-type="other" />
 
       <label for="msg-body">message</label>
       <textarea id="msg-body" name="message" rows="4" maxlength="1000" required></textarea>
@@ -62,7 +62,7 @@
 
         form.addEventListener("submit", async (e) => {
           e.preventDefault();
-          const name = document.getElementById("msg-name").value;
+          const name = document.getElementById("msg-handle").value;
           const message = document.getElementById("msg-body").value.trim();
           const hp = document.getElementById("msg-hp").value;
 

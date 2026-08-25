@@ -385,20 +385,6 @@ article img {
   border-color: var(--text-secondary);
 }
 
-/* Chrome ignores autocomplete="off" on name-like fields and force-fills
-   its own white background -- override it back to the site's colors.
-   Covers both the standard and legacy-webkit pseudo-classes. */
-.msg-form input:autofill,
-.msg-form input:-webkit-autofill,
-.msg-form input:-webkit-autofill:hover,
-.msg-form input:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--text-primary) !important;
-  -webkit-box-shadow: 0 0 0 1000px var(--bg) inset !important;
-  box-shadow: 0 0 0 1000px var(--bg) inset !important;
-  caret-color: var(--text-primary);
-  transition: background-color 9999s ease-in-out 0s;
-}
-
 .msg-form button {
   align-self: flex-start;
   background: var(--bg);
