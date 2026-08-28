@@ -362,7 +362,7 @@ article img {
   font-size: 0.85em;
 }
 
-.msg-form input[type="text"],
+.msg-form input,
 .msg-form textarea {
   background: var(--bg);
   border: 1px dashed var(--border);
@@ -379,7 +379,7 @@ article img {
   -moz-appearance: none;
 }
 
-.msg-form input[type="text"]:focus,
+.msg-form input:focus,
 .msg-form textarea:focus {
   outline: none;
   border-color: var(--text-secondary);
