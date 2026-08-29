@@ -1,2 +1,4 @@
 dist
 dev
+.wrangler/
+wrangler.jsonc
