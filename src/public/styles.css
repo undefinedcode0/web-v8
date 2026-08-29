@@ -348,6 +348,7 @@ article img {
   }
 }
 /* end misc stuff */
+
 /* start message widget */
 .msg-form {
   max-width: 480px;
@@ -371,9 +372,6 @@ article img {
   font-size: 0.9em;
   padding: 0.5rem;
   resize: vertical;
-  /* Stop the OS/desktop theme (GTK, etc.) from painting its own native
-     widget background over ours -- appearance:auto lets that happen in
-     both Chromium and Firefox on Linux identically. */
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -422,3 +420,86 @@ article img {
   opacity: 0;
 }
 /* end message widget */
+
+/* start interests box */
+.interests-wrap {
+  position: relative;
+  max-width: 480px;
+}
+ 
+.interests-wrap .scroll-hint {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  z-index: 2;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  animation: scroll-hint-bounce 1.6s ease-in-out infinite;
+}
+ 
+@keyframes scroll-hint-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+ 
+@media (prefers-reduced-motion: reduce) {
+  .interests-wrap .scroll-hint {
+    animation: none;
+  }
+}
+ 
+.interests-wrap::after {
+  content: '';
+  position: absolute;
+  left: 1px;
+  right: 7px; /* 1px border + 6px scrollbar gap, left un-faded */
+  bottom: 1px;
+  height: 28px;
+  background: linear-gradient(to bottom, transparent, var(--bg));
+  pointer-events: none;
+}
+ 
+.interests-box {
+  max-width: 480px;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1px dashed var(--border);
+  padding: 0.6rem 1rem;
+  margin-top: 0.75rem;
+}
+ 
+.interests-box ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+ 
+.interests-box li {
+  color: var(--text-secondary);
+  padding: 0.2rem 0;
+}
+ 
+.interests-box li:not(:last-child) {
+  border-bottom: 1px dashed var(--border);
+}
+ 
+.interests-box::-webkit-scrollbar {
+  width: 6px;
+}
+ 
+.interests-box::-webkit-scrollbar-track {
+  background: transparent;
+}
+ 
+.interests-box::-webkit-scrollbar-thumb {
+  background: var(--border);
+}
+ 
+.interests-box {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+/* end interests box */

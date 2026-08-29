@@ -40,7 +40,69 @@
         I am a huge computer nerd ever since I was a lil jit, breaking and fixing computers is something I do often to learn more about them.
 
         ---
+
+        ## 0x5 - Interests
+
+        A running list of stuff I'm into, in no particular order.
       </markdown>
+
+    <div class="interests-wrap">
+      <div class="interests-box" id="interests-box">
+        <ul>
+          <li>serial experiments lain</li>
+          <li>neon genesis evangelion</li>
+          <li>black lagoon</li>
+          <li>homestuck</li>
+          <li>meteorology (im a big geek on this)</li>
+          <li>graphic designing</li>
+          <li>semi-professional photography</li>
+          <li>pierce the veil</li>
+          <li>minecraft</li>
+          <li>murder drones (though i dont like it as much as i used to)</li>
+          <li>internecion cubes</li>
+          <li>cliffside</li>
+          <li>old films</li>
+          <li>stand and deliver (a film)</li>
+          <li>sci-fi movies</li>
+          <li>interstellar</li>
+          <li>inception</li>
+          <li>project hail mary</li>
+          <li>jazz</li>
+          <li>jazz fusion</li>
+          <li>jungle/dnb</li>
+          <li>ambience</li>
+          <li>breakcore</li>
+          <li>rap</li>
+          <li>synthwave</li>
+          <li>michael jackson</li>
+          <li>masayoshi takanaka</li>
+          <li>keygen church</li>
+          <li>etc etc... this list will keep growing</li>
+        </ul>
+      </div>
+      <span class="scroll-hint" id="scroll-hint" aria-hidden="true">&#9660;</span>
+    </div>
+
+    <script>
+      (() => {
+        const box = document.getElementById("interests-box");
+        const hint = document.getElementById("scroll-hint");
+        if (!box || !hint) return;
+
+        const AT_BOTTOM_THRESHOLD = 4;
+
+        function update() {
+          const scrollable = box.scrollHeight > box.clientHeight + AT_BOTTOM_THRESHOLD;
+          const atBottom =
+            box.scrollHeight - box.scrollTop - box.clientHeight < AT_BOTTOM_THRESHOLD;
+          hint.style.opacity = scrollable && !atBottom ? "1" : "0";
+        }
+
+        box.addEventListener("scroll", update, { passive: true });
+        window.addEventListener("resize", update);
+        update();
+      })();
+    </script>
   </article>
   <br />
 </Layout>
