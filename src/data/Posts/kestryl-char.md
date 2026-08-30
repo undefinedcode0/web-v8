@@ -25,7 +25,7 @@ He found out what he was by accident. While working on one of his weapons, he cu
 
 ## The Turn
 
-Learning the truth didn't keep him scared for long. He made a choice to fight the fear head-on instead of live folded up under it. He trained harder, started seeking out fights more dangerous than he needed to, and changed as a person, less talkative, more calculating. He kept the disguise, painting over the blood-marks on his suit lining the same way HIC's own bodysuit runs fuchsia trim, but the fear stopped running him. The caution stayed. The panic didn't.
+Learning the truth didn't keep him scared for long. He made a choice to fight the fear head-on instead of live folded up under it. He trained harder, started seeking out fights more dangerous than he needed to, and changed as a person, less talkative, more calculating. He kept the disguise, painting over the blood-marks on his suit lining the same way HIC's own bodysuit runs fuchsia trim, but the fear stopped running him.
 
 ## The Hunt
 
