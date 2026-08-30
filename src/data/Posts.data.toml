@@ -1,4 +1,5 @@
 files = [
+    "fashion.md",
     "kestryl-char.md",
     "lightmgr.md",
     "vuln-vibecoded.md",
