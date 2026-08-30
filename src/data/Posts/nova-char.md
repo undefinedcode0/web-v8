@@ -1,5 +1,5 @@
 ---
-title: My Character "Nova"
+title: My Character 'Nova'
 description: my first written character that was inspired by the webseries "Murder Drones"
 date: 'May 05 2025'
 updDate: 'November 09 2025'
