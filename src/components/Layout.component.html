@@ -156,7 +156,7 @@
         statusEl.textContent = nowPlaying
           ? `now listening to: "${name}" by "${artist}"`
           : track.date
-          ? `last played ${timeAgo(track.date.uts)}`
+          ? `last played "${name}" by "${artist}" ${timeAgo(track.date.uts)}`
           : "last played";
 
         root.classList.toggle("is-playing", nowPlaying);
