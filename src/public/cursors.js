@@ -1,7 +1,4 @@
 (() => {
-  // After `wrangler deploy`, it'll print a workers.dev URL like:
-  // https://web-v8-cursors.<your-subdomain>.workers.dev
-  // Use that (with wss:// instead of https://) here.
   const WS_HOST = "wss://web-v8-cursors.undefinedcode.workers.dev/ws";
   const MOVE_THROTTLE_MS = 40; // ~25/sec
 

@@ -497,3 +497,19 @@ article img {
   scrollbar-color: var(--border) transparent;
 }
 /* end interests box */
+
+/* start last.fm widget */
+.lastfm-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+ 
+.lastfm-status {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: var(--text-muted);
+}
+/* end last.fm widget */

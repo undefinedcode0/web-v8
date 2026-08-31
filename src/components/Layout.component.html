@@ -15,7 +15,16 @@
           <span><a href="https://github.com/undefinedcode0">GitHub</a></span>
           <span><a href="https://twitter.com/undefinedcode0">Twitter</a></span>
         </footer>
+
         <div style="color: var(--text-muted);"><i>made with love, by a human</i></div>
+
+        <div class="lastfm-widget" id="lastfm-widget" aria-live="polite">
+          <div class="lastfm-info">
+            <div class="lastfm-status" id="lastfm-status">loading...</div>
+            <div class="lastfm-track" id="lastfm-track"></div>
+          </div>
+        </div>
+        
         <div style="color: var(--text-muted);" id="quote"></div>
       </div>
       <aside class="lain-panel">
@@ -24,6 +33,7 @@
     </div>
   </body>
 </html>
+
 <script>
   (() => {
     const quotes = [
@@ -95,5 +105,69 @@
     }
 
     initTyping();
+  })();
+</script>
+
+<script>
+  (() => {
+    const LASTFM_USER = "undefinedcode0";
+    const LASTFM_API_KEY = "432ed45dd4686b114e63a37dbae2045c";
+    const POLL_MS = 30000;
+
+    const root = document.getElementById("lastfm-widget");
+    const statusEl = document.getElementById("lastfm-status");
+    const trackEl = document.getElementById("lastfm-track");
+    if (!root) return;
+
+    function timeAgo(unixSeconds) {
+      const diff = Math.max(0, Date.now() / 1000 - unixSeconds);
+      const mins = Math.floor(diff / 60);
+      if (mins < 1) return "just now";
+      if (mins < 60) return `${mins}m ago`;
+      const hours = Math.floor(mins / 60);
+      if (hours < 24) return `${hours}h ago`;
+      const days = Math.floor(hours / 24);
+      return `${days}d ago`;
+    }
+
+    async function update() {
+      try {
+        const url =
+          "https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks" +
+          `&user=${encodeURIComponent(LASTFM_USER)}` +
+          `&api_key=${encodeURIComponent(LASTFM_API_KEY)}` +
+          "&format=json&limit=1";
+        const res = await fetch(url);
+        const data = await res.json();
+        const track = data && data.recenttracks && data.recenttracks.track && data.recenttracks.track[0];
+
+        if (!track) {
+          statusEl.textContent = "no scrobbles yet";
+          trackEl.textContent = "";
+          root.classList.remove("is-playing");
+          return;
+        }
+
+        const attr = track["@attr"];
+        const nowPlaying = !!(attr && attr.nowplaying === "true");
+        const artist = (track.artist && track.artist["#text"]) || "";
+        const name = track.name || "";
+
+        statusEl.textContent = nowPlaying
+          ? `now listening to: "${name}" by "${artist}"`
+          : track.date
+          ? `last played ${timeAgo(track.date.uts)}`
+          : "last played";
+
+        root.classList.toggle("is-playing", nowPlaying);
+      } catch {
+        statusEl.textContent = "couldn't load last.fm";
+        trackEl.textContent = "";
+        root.classList.remove("is-playing");
+      }
+    }
+
+    update();
+    setInterval(update, POLL_MS);
   })();
 </script>
