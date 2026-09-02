@@ -13,7 +13,7 @@ author: undefinedcode
 
 ## Overview
 
-A male troll built as a loose counterpart to Her Imperial Condesce, not a strict gender-swap. He doesn't sit at the top of the hemospectrum because he was bred for it, he sits outside it entirely. His blood is ultraviolet, a color that shouldn't exist on any troll, caused by a solar flare that disrupted his gene expression while he was still developing in the brooding caverns. Under normal light his blood reads as black, near invisible, only showing its true color under UV light or direct sun.
+A male troll built as a loose counterpart to Her Imperial Condesce, not a strict gender-swap. He doesn't sit at the top of the hemospectrum because he was bred for it, he sits outside it entirely. His blood is ultraviolet, a color that shouldn't exist on any troll, caused by a solar flare that disrupted his gene expression while he was still developing in the brooding caverns. Under normal light his blood reads as black, near invisible, only showing its true color under UV light.
 
 ## Origin
 
