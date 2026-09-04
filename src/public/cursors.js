@@ -1,10 +1,12 @@
 (() => {
   const WS_HOST = "wss://web-v8-cursors.undefinedcode.workers.dev/ws";
   const MOVE_THROTTLE_MS = 40; // ~25/sec
+  const HEARTBEAT_MS = 12000; // keep the server's staleness check happy
 
   const room = location.pathname;
   const cursors = new Map(); // id -> { el, x, y }
   let ws = null;
+  let heartbeatId = null;
 
   function docSize() {
     const el = document.documentElement;
@@ -127,8 +129,26 @@
     });
   }
 
+  function stopHeartbeat() {
+    if (heartbeatId) {
+      clearInterval(heartbeatId);
+      heartbeatId = null;
+    }
+  }
+
+  function startHeartbeat() {
+    stopHeartbeat();
+    heartbeatId = setInterval(() => {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: "ping" }));
+      }
+    }, HEARTBEAT_MS);
+  }
+
   function connect() {
     ws = new WebSocket(`${WS_HOST}?room=${encodeURIComponent(room)}`);
+
+    ws.addEventListener("open", startHeartbeat);
 
     ws.addEventListener("message", (event) => {
       let msg;
@@ -147,6 +167,7 @@
     });
 
     ws.addEventListener("close", () => {
+      stopHeartbeat();
       cursors.forEach((c) => c.el.remove());
       cursors.clear();
       setTimeout(connect, 2000);
@@ -173,5 +194,15 @@
 
   document.addEventListener("mousemove", onMove, { passive: true });
   window.addEventListener("resize", repositionAll);
+
+  // Best-effort clean close so the server sees a proper close frame
+  // instead of relying purely on the network eventually noticing --
+  // pagehide fires more reliably than beforeunload across browsers,
+  // including on bfcache navigations and mobile Safari.
+  window.addEventListener("pagehide", () => {
+    stopHeartbeat();
+    if (ws) ws.close();
+  });
+
   connect();
 })();
