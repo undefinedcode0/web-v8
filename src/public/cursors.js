@@ -1,118 +1,90 @@
 (() => {
+  if (matchMedia("(pointer: coarse)").matches) return;
+
   const WS_HOST = "wss://web-v8-cursors.undefinedcode.workers.dev/ws";
-  const MOVE_THROTTLE_MS = 40; // ~25/sec
-  const HEARTBEAT_MS = 12000; // keep the server's staleness check happy
+  const MOVE_THROTTLE_MS = 40;
+  const HEARTBEAT_MS = 12000;
+  const REF_W = 1400;
 
-  const room = location.pathname;
-  const cursors = new Map(); // id -> { el, x, y }
+  const room = location.pathname.replace(/(\/index)?(\.html)?\/?$/, "") || "/";
+  const cursors = new Map();
+  const box = { left: 0, h: 1 };
   let ws = null;
-  let heartbeatId = null;
+  let retry = 0;
+  let timer = null;
+  let lastSent = 0;
 
-  function docSize() {
-    const el = document.documentElement;
-    return {
-      w: Math.max(el.scrollWidth, el.clientWidth, 1),
-      h: Math.max(el.scrollHeight, el.clientHeight, 1),
-    };
+  const ART = [
+    "ww........",
+    "wbw.......",
+    "wbbw......",
+    "wbbbw.....",
+    "wbbbbw....",
+    "wbbbbbw...",
+    "wbbbbbbw..",
+    "wbbbbbbbw.",
+    "wbbbbbbbbw",
+    "wbbbbbwwww",
+    "wbbwbbw...",
+    "wbw.wbbw..",
+    "ww..wbbw..",
+    ".....wbbw.",
+    ".....wbbw.",
+    "......ww..",
+  ];
+  const FILL = { w: "#fff", b: "#000" };
+  const rects = ART.flatMap((row, y) =>
+    [...row].flatMap((c, x) =>
+      FILL[c] ? [`<rect x="${x}" y="${y}" width="1" height="1" fill="${FILL[c]}"/>`] : []
+    )
+  ).join("");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="10" height="16" shape-rendering="crispEdges">${rects}</svg>`;
+
+  const style = document.createElement("style");
+  style.textContent = `
+.remote-cursor{position:absolute;top:0;left:0;pointer-events:none;z-index:9999;will-change:transform;transition:transform 80ms linear}
+.remote-cursor i{display:block;width:10px;height:16px;background:url("data:image/svg+xml,${encodeURIComponent(svg)}")}
+.remote-cursor span{display:block;margin:-2px 0 0 12px;font-size:.65rem;white-space:nowrap;opacity:.85}
+@media (prefers-reduced-motion:reduce){.remote-cursor{transition:none}}`;
+  document.head.append(style);
+
+  const safeColor = (c) => (/^#[0-9a-f]{3,8}$/i.test(c) ? c : "#aaa");
+
+  function measure() {
+    const grid = document.querySelector(".site-grid");
+    box.left = grid ? grid.getBoundingClientRect().left + window.scrollX : 0;
+    box.h = Math.max(document.documentElement.scrollHeight, 1);
   }
-  
-  const CURSOR_SVG =
-    '<svg width="10" height="16" viewBox="0 0 10 16" shape-rendering="crispEdges">' +
-    '<rect x="0" y="0" width="2" height="1" fill="#fff"/>' +
-    '<rect x="0" y="1" width="1" height="1" fill="#fff"/>' +
-    '<rect x="1" y="1" width="1" height="1" fill="#000"/>' +
-    '<rect x="2" y="1" width="1" height="1" fill="#fff"/>' +
-    '<rect x="0" y="2" width="1" height="1" fill="#fff"/>' +
-    '<rect x="1" y="2" width="2" height="1" fill="#000"/>' +
-    '<rect x="3" y="2" width="1" height="1" fill="#fff"/>' +
-    '<rect x="0" y="3" width="1" height="1" fill="#fff"/>' +
-    '<rect x="1" y="3" width="3" height="1" fill="#000"/>' +
-    '<rect x="4" y="3" width="1" height="1" fill="#fff"/>' +
-    '<rect x="0" y="4" width="1" height="1" fill="#fff"/>' +
-    '<rect x="1" y="4" width="4" height="1" fill="#000"/>' +
-    '<rect x="5" y="4" width="1" height="1" fill="#fff"/>' +
-    '<rect x="0" y="5" width="1" height="1" fill="#fff"/>' +
-    '<rect x="1" y="5" width="5" height="1" fill="#000"/>' +
-    '<rect x="6" y="5" width="1" height="1" fill="#fff"/>' +
-    '<rect x="0" y="6" width="1" height="1" fill="#fff"/>' +
-    '<rect x="1" y="6" width="6" height="1" fill="#000"/>' +
-    '<rect x="7" y="6" width="1" height="1" fill="#fff"/>' +
-    '<rect x="0" y="7" width="1" height="1" fill="#fff"/>' +
-    '<rect x="1" y="7" width="7" height="1" fill="#000"/>' +
-    '<rect x="8" y="7" width="1" height="1" fill="#fff"/>' +
-    '<rect x="0" y="8" width="1" height="1" fill="#fff"/>' +
-    '<rect x="1" y="8" width="8" height="1" fill="#000"/>' +
-    '<rect x="9" y="8" width="1" height="1" fill="#fff"/>' +
-    '<rect x="0" y="9" width="1" height="1" fill="#fff"/>' +
-    '<rect x="1" y="9" width="5" height="1" fill="#000"/>' +
-    '<rect x="6" y="9" width="4" height="1" fill="#fff"/>' +
-    '<rect x="0" y="10" width="1" height="1" fill="#fff"/>' +
-    '<rect x="1" y="10" width="2" height="1" fill="#000"/>' +
-    '<rect x="3" y="10" width="1" height="1" fill="#fff"/>' +
-    '<rect x="4" y="10" width="2" height="1" fill="#000"/>' +
-    '<rect x="6" y="10" width="1" height="1" fill="#fff"/>' +
-    '<rect x="0" y="11" width="1" height="1" fill="#fff"/>' +
-    '<rect x="1" y="11" width="1" height="1" fill="#000"/>' +
-    '<rect x="2" y="11" width="1" height="1" fill="#fff"/>' +
-    '<rect x="4" y="11" width="1" height="1" fill="#fff"/>' +
-    '<rect x="5" y="11" width="2" height="1" fill="#000"/>' +
-    '<rect x="7" y="11" width="1" height="1" fill="#fff"/>' +
-    '<rect x="0" y="12" width="2" height="1" fill="#fff"/>' +
-    '<rect x="4" y="12" width="1" height="1" fill="#fff"/>' +
-    '<rect x="5" y="12" width="2" height="1" fill="#000"/>' +
-    '<rect x="7" y="12" width="1" height="1" fill="#fff"/>' +
-    '<rect x="5" y="13" width="1" height="1" fill="#fff"/>' +
-    '<rect x="6" y="13" width="2" height="1" fill="#000"/>' +
-    '<rect x="8" y="13" width="1" height="1" fill="#fff"/>' +
-    '<rect x="5" y="14" width="1" height="1" fill="#fff"/>' +
-    '<rect x="6" y="14" width="2" height="1" fill="#000"/>' +
-    '<rect x="8" y="14" width="1" height="1" fill="#fff"/>' +
-    '<rect x="6" y="15" width="2" height="1" fill="#fff"/>' +
-    '</svg>';
 
-  function makeCursorEl(color, id) {
+  function place(c) {
+    const maxX = Math.max(0, document.documentElement.clientWidth - 70);
+    const px = Math.min(box.left + c.x * REF_W, maxX);
+    const py = Math.min(c.y * box.h, Math.max(0, box.h - 20));
+    c.el.style.transform = `translate(${px}px,${py}px)`;
+  }
+
+  function makeEl(id, color) {
     const el = document.createElement("div");
     el.className = "remote-cursor";
-    el.style.cssText = [
-      "position:absolute",
-      "top:0",
-      "left:0",
-      "pointer-events:none",
-      "z-index:9999",
-      "will-change:transform",
-      "transition:transform 80ms linear",
-    ].join(";");
-    el.innerHTML =
-      CURSOR_SVG +
-      '<span style="' +
-      [
-        "display:block",
-        "margin-left:12px",
-        "margin-top:-2px",
-        "font-family:'GeistMono',monospace",
-        "font-size:0.65rem",
-        "color:" + color,
-        "white-space:nowrap",
-        "opacity:0.85",
-      ].join(";") +
-      '">' +
-      id +
-      "</span>";
-    document.body.appendChild(el);
+    el.setAttribute("aria-hidden", "true");
+    const label = document.createElement("span");
+    label.textContent = id;
+    label.style.color = safeColor(color);
+    el.append(document.createElement("i"), label);
+    document.body.append(el);
     return el;
   }
 
   function setCursor(id, x, y, color) {
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return;
     let c = cursors.get(id);
     if (!c) {
-      c = { el: makeCursorEl(color, id), x, y };
+      c = { el: makeEl(id, color), x, y };
       cursors.set(id, c);
-    } else {
-      c.x = x;
-      c.y = y;
     }
-    const { w, h } = docSize();
-    c.el.style.transform = `translate(${x * w}px, ${y * h}px)`;
+    c.x = x;
+    c.y = y;
+    place(c);
   }
 
   function removeCursor(id) {
@@ -122,87 +94,102 @@
     cursors.delete(id);
   }
 
-  function repositionAll() {
-    const { w, h } = docSize();
-    cursors.forEach((c) => {
-      c.el.style.transform = `translate(${c.x * w}px, ${c.y * h}px)`;
-    });
+  function clearCursors() {
+    cursors.forEach((c) => c.el.remove());
+    cursors.clear();
   }
 
-  function stopHeartbeat() {
-    if (heartbeatId) {
-      clearInterval(heartbeatId);
-      heartbeatId = null;
+  function onMessage(event) {
+    if (event.data === "pong") return;
+    let msg;
+    try {
+      msg = JSON.parse(event.data);
+    } catch {
+      return;
+    }
+    if (msg.type === "sync" && Array.isArray(msg.cursors)) {
+      msg.cursors.forEach((c) => setCursor(c.id, c.x, c.y, c.color));
+    } else if (msg.type === "move") {
+      setCursor(msg.id, msg.x, msg.y, msg.color);
+    } else if (msg.type === "leave") {
+      removeCursor(msg.id);
     }
   }
 
-  function startHeartbeat() {
-    stopHeartbeat();
-    heartbeatId = setInterval(() => {
-      if (ws && ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ type: "ping" }));
-      }
-    }, HEARTBEAT_MS);
-  }
-
   function connect() {
-    ws = new WebSocket(`${WS_HOST}?room=${encodeURIComponent(room)}`);
+    if (ws || document.hidden) return;
+    const sock = new WebSocket(`${WS_HOST}?room=${encodeURIComponent(room)}`);
+    ws = sock;
+    let hb = null;
 
-    ws.addEventListener("open", startHeartbeat);
-
-    ws.addEventListener("message", (event) => {
-      let msg;
-      try {
-        msg = JSON.parse(event.data);
-      } catch {
-        return;
-      }
-      if (msg.type === "sync") {
-        msg.cursors.forEach((c) => setCursor(c.id, c.x, c.y, c.color));
-      } else if (msg.type === "move") {
-        setCursor(msg.id, msg.x, msg.y, msg.color);
-      } else if (msg.type === "leave") {
-        removeCursor(msg.id);
-      }
+    sock.addEventListener("open", () => {
+      retry = 0;
+      hb = setInterval(() => {
+        if (sock.readyState === WebSocket.OPEN) sock.send("ping");
+      }, HEARTBEAT_MS);
     });
 
-    ws.addEventListener("close", () => {
-      stopHeartbeat();
-      cursors.forEach((c) => c.el.remove());
-      cursors.clear();
-      setTimeout(connect, 2000);
+    sock.addEventListener("message", onMessage);
+
+    sock.addEventListener("close", () => {
+      clearInterval(hb);
+      if (ws !== sock) return;
+      ws = null;
+      clearCursors();
+      if (document.hidden) return;
+      const delay = Math.min(30000, 1000 * 2 ** retry++) * (0.5 + Math.random() / 2);
+      timer = setTimeout(connect, delay);
     });
 
-    ws.addEventListener("error", () => ws.close());
+    sock.addEventListener("error", () => sock.close());
   }
 
-  let lastSent = 0;
+  function disconnect() {
+    clearTimeout(timer);
+    const sock = ws;
+    ws = null;
+    clearCursors();
+    if (sock) sock.close();
+  }
+
   function onMove(e) {
     const now = performance.now();
     if (now - lastSent < MOVE_THROTTLE_MS) return;
-    lastSent = now;
     if (!ws || ws.readyState !== WebSocket.OPEN) return;
-    const { w, h } = docSize();
+    lastSent = now;
     ws.send(
       JSON.stringify({
         type: "move",
-        x: e.pageX / w,
-        y: e.pageY / h,
+        x: (e.pageX - box.left) / REF_W,
+        y: e.pageY / box.h,
       })
     );
   }
 
-  document.addEventListener("mousemove", onMove, { passive: true });
-  window.addEventListener("resize", repositionAll);
+  new ResizeObserver(() => {
+    measure();
+    cursors.forEach(place);
+  }).observe(document.body);
 
-  // Best-effort clean close so the server sees a proper close frame
-  // instead of relying purely on the network eventually noticing --
-  // pagehide fires more reliably than beforeunload across browsers,
-  // including on bfcache navigations and mobile Safari.
-  window.addEventListener("pagehide", () => {
-    stopHeartbeat();
-    if (ws) ws.close();
+  document.addEventListener("mousemove", onMove, { passive: true });
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      disconnect();
+    } else {
+      retry = 0;
+      connect();
+    }
   });
 
+  window.addEventListener("pagehide", disconnect);
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted) {
+      retry = 0;
+      connect();
+    }
+  });
+
+  measure();
   connect();
 })();
